@@ -9,11 +9,9 @@
         content="width=device-width, initial-scale=1.0">
 
   <meta name="description"
-        content="Mini CRM Dashboard Project">
+        content="Smart CRM Lead Management Dashboard">
 
-  <title>Advanced Mini CRM Dashboard</title>
-
-  <!-- GOOGLE FONT -->
+  <title>Smart CRM Lead Management Dashboard</title>
 
   <link rel="preconnect"
         href="https://fonts.googleapis.com">
@@ -24,6 +22,9 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
+
+  <link rel="icon"
+        href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
 
   <style>
 
@@ -93,13 +94,35 @@
       transform:translateX(5px);
     }
 
-    /* MAIN CONTENT */
+    /* MAIN */
 
     .main{
       margin-left:260px;
       width:100%;
       padding:30px;
     }
+
+    /* WELCOME */
+
+    .welcome-card{
+      background:linear-gradient(135deg,#2563eb,#1d4ed8);
+      color:white;
+      padding:30px;
+      border-radius:24px;
+      margin-bottom:30px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .welcome-card h2{
+      font-size:30px;
+      margin-bottom:10px;
+    }
+
+    .welcome-card p{
+      opacity:0.9;
+    }
+
+    /* TOPBAR */
 
     .topbar{
       display:flex;
@@ -113,11 +136,6 @@
     .topbar h1{
       font-size:34px;
       color:#1e3a8a;
-    }
-
-    .topbar p{
-      color:#475569;
-      margin-top:5px;
     }
 
     .search-box input{
@@ -145,7 +163,7 @@
       padding:28px;
       border-radius:24px;
       box-shadow:0 8px 25px rgba(0,0,0,0.08);
-      transition:0.3s;
+      transition:0.4s;
       position:relative;
       overflow:hidden;
     }
@@ -161,7 +179,7 @@
     }
 
     .card:hover{
-      transform:translateY(-6px);
+      transform:translateY(-8px);
     }
 
     .card h3{
@@ -231,7 +249,6 @@
 
     .btn:hover{
       transform:scale(1.02);
-      opacity:0.95;
     }
 
     /* TABLE */
@@ -267,24 +284,38 @@
       color:white;
     }
 
+    tr{
+      transition:0.3s;
+    }
+
     tr:hover{
       background:#f8fafc;
     }
 
-    .status-new{
-      color:#2563eb;
+    /* STATUS */
+
+    .badge{
+      padding:8px 14px;
+      border-radius:20px;
+      color:white;
+      font-size:13px;
       font-weight:600;
+      display:inline-block;
     }
 
-    .status-contacted{
-      color:#ea580c;
-      font-weight:600;
+    .new{
+      background:#2563eb;
     }
 
-    .status-converted{
-      color:#16a34a;
-      font-weight:600;
+    .contacted{
+      background:#ea580c;
     }
+
+    .converted{
+      background:#16a34a;
+    }
+
+    /* BUTTONS */
 
     .action-buttons{
       display:flex;
@@ -305,16 +336,13 @@
       background:#dc2626;
     }
 
-    .delete-btn:hover{
-      background:#b91c1c;
-    }
-
     .edit-btn{
       background:#2563eb;
     }
 
+    .delete-btn:hover,
     .edit-btn:hover{
-      background:#1d4ed8;
+      opacity:0.9;
     }
 
     .empty-message{
@@ -322,6 +350,28 @@
       padding:20px;
       color:#64748b;
       font-weight:500;
+    }
+
+    /* NOTIFICATION */
+
+    .notification{
+      position:fixed;
+      top:20px;
+      right:20px;
+      background:#16a34a;
+      color:white;
+      padding:15px 25px;
+      border-radius:12px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.15);
+      opacity:0;
+      pointer-events:none;
+      transition:0.4s;
+      z-index:9999;
+    }
+
+    .notification.show{
+      opacity:1;
+      pointer-events:auto;
     }
 
     /* FOOTER */
@@ -342,11 +392,6 @@
       color:#2563eb;
       margin:0 12px;
       font-weight:600;
-      transition:0.3s;
-    }
-
-    .social-links a:hover{
-      color:#1d4ed8;
     }
 
     /* RESPONSIVE */
@@ -371,29 +416,16 @@
 
     @media(max-width:600px){
 
-      .topbar{
-        flex-direction:column;
-        align-items:flex-start;
+      textarea{
+        grid-column:span 1;
       }
 
       .search-box input{
         width:100%;
       }
 
-      textarea{
-        grid-column:span 1;
-      }
-
-      .topbar h1{
-        font-size:26px;
-      }
-
       .dashboard{
         grid-template-columns:1fr;
-      }
-
-      .card p{
-        font-size:28px;
       }
 
     }
@@ -404,13 +436,22 @@
 
 <body>
 
+  <!-- NOTIFICATION -->
+
+  <div class="notification"
+       id="notification">
+
+    Lead Added Successfully!
+
+  </div>
+
   <!-- SIDEBAR -->
 
   <div class="sidebar">
 
     <div class="logo">
 
-      <h2>Mini CRM</h2>
+      <h2>Smart CRM</h2>
 
       <p>Lead Management System</p>
 
@@ -434,19 +475,23 @@
 
   <div class="main">
 
+    <!-- WELCOME -->
+
+    <div class="welcome-card">
+
+      <h2>Welcome to Smart CRM Dashboard 👋</h2>
+
+      <p>
+        Manage and track your client leads efficiently with Smart CRM Dashboard.
+      </p>
+
+    </div>
+
     <!-- TOPBAR -->
 
     <div class="topbar">
 
-      <div>
-
-        <h1>Client Lead Management Dashboard</h1>
-
-        <p>
-          Manage and track your business leads efficiently
-        </p>
-
-      </div>
+      <h1>Client Lead Dashboard</h1>
 
       <div class="search-box">
 
@@ -521,7 +566,8 @@
                placeholder="Lead Source"
                required>
 
-        <select id="status">
+        <select id="status"
+                required>
 
           <option value="New">New</option>
 
@@ -586,7 +632,7 @@
     <footer id="footer">
 
       <p>
-        © 2026 Advanced Mini CRM Dashboard |
+        © 2026 Smart CRM Dashboard |
         Designed & Developed by Gayathri Kella
       </p>
 
@@ -612,8 +658,6 @@
 
   </div>
 
-  <!-- JAVASCRIPT -->
-
   <script>
 
     const form =
@@ -625,19 +669,65 @@
     const searchInput =
     document.getElementById("searchInput");
 
+    const notification =
+    document.getElementById("notification");
+
     let editIndex = null;
 
     let leads =
-    JSON.parse(localStorage.getItem("leads"))
-    || [];
+    JSON.parse(localStorage.getItem("leads"));
+
+    if(!leads){
+
+      leads = [
+
+        {
+          name:"Rahul Sharma",
+          email:"rahul@gmail.com",
+          source:"LinkedIn",
+          status:"New",
+          notes:"Interested in website project",
+          date:new Date().toLocaleDateString()
+        },
+
+        {
+          name:"Priya Reddy",
+          email:"priya@gmail.com",
+          source:"Instagram",
+          status:"Contacted",
+          notes:"Asked for portfolio design",
+          date:new Date().toLocaleDateString()
+        }
+
+      ];
+
+      localStorage.setItem(
+        "leads",
+        JSON.stringify(leads)
+      );
+
+    }
 
     displayLeads();
 
     updateDashboard();
 
-    /* ADD OR UPDATE LEAD */
+    function showNotification(message){
+
+      notification.innerText = message;
+
+      notification.classList.add("show");
+
+      setTimeout(()=>{
+
+        notification.classList.remove("show");
+
+      },2000);
+
+    }
 
     form.addEventListener("submit",
+
     function(e){
 
       e.preventDefault();
@@ -674,7 +764,7 @@
 
       if(duplicate){
 
-        alert("Lead already exists!");
+        showNotification("Lead already exists!");
 
         return;
 
@@ -684,7 +774,9 @@
 
         leads.push(lead);
 
-        alert("Lead added successfully!");
+        showNotification(
+          "Lead added successfully!"
+        );
 
       }
 
@@ -692,7 +784,9 @@
 
         leads[editIndex] = lead;
 
-        alert("Lead updated successfully!");
+        showNotification(
+          "Lead updated successfully!"
+        );
 
         editIndex = null;
 
@@ -710,8 +804,6 @@
       form.reset();
 
     });
-
-    /* DISPLAY LEADS */
 
     function displayLeads(filteredLeads = leads){
 
@@ -740,11 +832,11 @@
 
       filteredLeads.forEach((lead,index)=>{
 
-        let statusClass = "";
+        let badgeClass = "";
 
         if(lead.status === "New"){
 
-          statusClass = "status-new";
+          badgeClass = "new";
 
         }
 
@@ -752,15 +844,13 @@
           lead.status === "Contacted"
         ){
 
-          statusClass =
-          "status-contacted";
+          badgeClass = "contacted";
 
         }
 
         else{
 
-          statusClass =
-          "status-converted";
+          badgeClass = "converted";
 
         }
 
@@ -774,8 +864,12 @@
 
             <td>${lead.source}</td>
 
-            <td class="${statusClass}">
-              ${lead.status}
+            <td>
+
+              <span class="badge ${badgeClass}">
+                ${lead.status}
+              </span>
+
             </td>
 
             <td>${lead.date}</td>
@@ -812,8 +906,6 @@
 
     }
 
-    /* DELETE */
-
     function deleteLead(index){
 
       if(confirm(
@@ -831,11 +923,13 @@
 
         updateDashboard();
 
+        showNotification(
+          "Lead deleted successfully!"
+        );
+
       }
 
     }
-
-    /* EDIT */
 
     function editLead(index){
 
@@ -865,8 +959,6 @@
 
     }
 
-    /* UPDATE DASHBOARD */
-
     function updateDashboard(){
 
       document.getElementById("totalLeads")
@@ -888,8 +980,6 @@
       l.status === "Converted").length;
 
     }
-
-    /* SEARCH */
 
     searchInput.addEventListener(
     "keyup",

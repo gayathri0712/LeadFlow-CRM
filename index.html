@@ -1,742 +1,1163 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Smart CRM — a responsive lead management dashboard">
+<title>Smart CRM | Lead Management</title>
 
-  <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+<style>
+:root {
+  --navy: #111827;
+  --blue: #4f46e5;
+  --blue2: #4338ca;
+  --bg: #f5f7fb;
+  --text: #172033;
+  --muted: #6b7280;
+  --line: #e7eaf1;
+  --shadow: 0 10px 30px rgba(20,30,60,.06);
+}
 
-  <meta name="description"
-        content="Smart CRM Lead Management Dashboard">
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  <title>Smart CRM Lead Management Dashboard</title>
+html { scroll-behavior: smooth; }
 
-  <link rel="preconnect"
-        href="https://fonts.googleapis.com">
+body {
+  font-family: Inter, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
 
-  <link rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin>
+button, input, select, textarea {
+  font: inherit;
+}
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+button { cursor: pointer; }
 
-  <style>
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 245px;
+  background: var(--navy);
+  color: white;
+  padding: 27px 18px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Poppins',sans-serif;
-    }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px 35px;
+}
 
-    body{
-      background:#eef2ff;
-      display:flex;
-      min-height:100vh;
-      color:#1e293b;
-    }
+.brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: linear-gradient(135deg,#818cf8,#4f46e5);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 21px;
+}
 
-    .sidebar{
-      width:260px;
-      background:linear-gradient(180deg,#0f172a,#1e3a8a);
-      color:white;
-      padding:25px;
-      position:fixed;
-      height:100%;
-    }
+.brand h2 { font-size: 19px; }
+.brand p { font-size: 11px; color: #9ca3af; margin-top: 4px; }
 
-    .logo{
-      text-align:center;
-      margin-bottom:40px;
-    }
+.nav-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #9ca3af;
+  padding: 0 13px 10px;
+}
 
-    .logo h2{
-      color:#facc15;
-      font-size:30px;
-    }
+.nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #cbd5e1;
+  padding: 13px 14px;
+  border-radius: 11px;
+  margin: 4px 0;
+  font-size: 13px;
+  font-weight: 600;
+  transition: .2s;
+}
 
-    .sidebar ul{
-      list-style:none;
-    }
+.nav a:hover,
+.nav a.active {
+  background: #312e81;
+  color: white;
+}
 
-    .sidebar ul li{
-      margin:18px 0;
-    }
+.nav-icon { width: 20px; text-align: center; }
 
-    .sidebar ul li a{
-      display:block;
-      text-decoration:none;
-      color:white;
-      padding:14px;
-      border-radius:12px;
-      transition:0.3s;
-    }
+.sidebar-bottom {
+  margin-top: auto;
+  border-top: 1px solid #374151;
+  padding: 18px 10px 0;
+  color: #9ca3af;
+  font-size: 11px;
+  line-height: 1.7;
+}
 
-    .sidebar ul li a:hover{
-      background:#2563eb;
-    }
+.main {
+  margin-left: 245px;
+  padding: 32px clamp(18px,3vw,42px);
+  max-width: 1800px;
+}
 
-    .main{
-      margin-left:260px;
-      width:100%;
-      padding:30px;
-    }
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
 
-    .welcome-card{
-      background:linear-gradient(135deg,#2563eb,#1d4ed8);
-      color:white;
-      padding:30px;
-      border-radius:24px;
-      margin-bottom:30px;
-    }
+.eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--blue);
+  font-weight: 800;
+  margin-bottom: 7px;
+}
 
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:35px;
-      flex-wrap:wrap;
-      gap:20px;
-    }
+h1 {
+  font-size: clamp(25px,3vw,34px);
+  letter-spacing: -1px;
+}
 
-    .topbar h1{
-      font-size:34px;
-      color:#1e3a8a;
-    }
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 8px;
+}
 
-    .search-box input{
-      padding:14px;
-      width:280px;
-      border:none;
-      border-radius:12px;
-      outline:none;
-    }
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 
-    .dashboard{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:25px;
-      margin-bottom:60px;
-    }
+.date-chip {
+  background: white;
+  border: 1px solid var(--line);
+  padding: 11px 14px;
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
 
-    .card{
-      background:white;
-      padding:28px;
-      border-radius:24px;
-      box-shadow:0 8px 25px rgba(0,0,0,0.08);
-    }
+.btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 15px;
+  font-weight: 700;
+  font-size: 12px;
+  transition: .2s;
+}
 
-    .card h3{
-      color:#2563eb;
-      margin-bottom:10px;
-    }
+.btn:active { transform: scale(.98); }
 
-    .card p{
-      font-size:38px;
-      font-weight:bold;
-    }
+.btn-primary {
+  background: var(--blue);
+  color: white;
+}
 
-    .form-section,
-    .table-section{
-      background:white;
-      padding:35px;
-      border-radius:25px;
-      box-shadow:0 8px 25px rgba(0,0,0,0.08);
-      margin-bottom:60px;
-    }
+.btn-primary:hover { background: var(--blue2); }
 
-    .form-section h2,
-    .table-section h2{
-      margin-bottom:25px;
-      color:#1e3a8a;
-    }
+.btn-light {
+  background: white;
+  color: #374151;
+  border: 1px solid var(--line);
+}
 
-    form{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-      gap:20px;
-    }
+.btn-light:hover { background: #f9fafb; }
 
-    form input,
-    form select,
-    form textarea{
-      padding:16px;
-      border:1px solid #dbeafe;
-      border-radius:12px;
-      outline:none;
-    }
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(115deg,#312e81,#4f46e5 62%,#818cf8);
+  color: white;
+  border-radius: 20px;
+  padding: 27px 30px;
+  margin-bottom: 23px;
+  box-shadow: 0 14px 32px rgba(79,70,229,.17);
+}
 
-    textarea{
-      grid-column:span 2;
-      resize:none;
-    }
+.hero h2 {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
 
-    .btn{
-      background:#2563eb;
-      color:white;
-      border:none;
-      padding:15px;
-      border-radius:12px;
-      cursor:pointer;
-    }
+.hero p {
+  font-size: 13px;
+  color: #e0e7ff;
+  max-width: 520px;
+  line-height: 1.7;
+}
 
-    table{
-      width:100%;
-      border-collapse:collapse;
-      min-width:850px;
-    }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
 
-    table th,
-    table td{
-      padding:16px;
-      text-align:left;
-      border-bottom:1px solid #e2e8f0;
-    }
+.stat {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 21px;
+  box-shadow: var(--shadow);
+  min-width: 0;
+}
 
-    table th{
-      background:#2563eb;
-      color:white;
-    }
+.stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
 
-    .badge{
-      padding:8px 14px;
-      border-radius:20px;
-      color:white;
-      font-size:13px;
-    }
+.stat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  background: #eef2ff;
+  color: var(--blue);
+}
 
-    .new{
-      background:#2563eb;
-    }
+.stat-number {
+  font-size: 32px;
+  font-weight: 800;
+  margin-top: 13px;
+}
 
-    .contacted{
-      background:#ea580c;
-    }
+.stat-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
 
-    .converted{
-      background:#16a34a;
-    }
+.panel {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  box-shadow: var(--shadow);
+  margin-bottom: 23px;
+  overflow: hidden;
+}
 
-    .action-buttons{
-      display:flex;
-      gap:10px;
-    }
+.panel-head {
+  padding: 22px 24px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
 
-    .edit-btn,
-    .delete-btn{
-      border:none;
-      padding:8px 14px;
-      border-radius:8px;
-      color:white;
-      cursor:pointer;
-    }
+.panel-head h2 { font-size: 16px; }
 
-    .edit-btn{
-      background:#2563eb;
-    }
+.panel-head p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+}
 
-    .delete-btn{
-      background:#dc2626;
-    }
+.form-body { padding: 24px; }
 
-    .notification{
-      position:fixed;
-      top:20px;
-      right:20px;
-      background:#16a34a;
-      color:white;
-      padding:15px 25px;
-      border-radius:12px;
-      opacity:0;
-      transition:0.4s;
-    }
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 17px;
+}
 
-    .notification.show{
-      opacity:1;
-    }
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-    footer{
-      text-align:center;
-      padding-bottom:30px;
-    }
+.field.full { grid-column: 1/-1; }
 
-    @media(max-width:900px){
+.field label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #374151;
+}
 
-      body{
-        flex-direction:column;
-      }
+.field input,
+.field select,
+.field textarea,
+.search-input,
+.filter-select {
+  width: 100%;
+  border: 1px solid #dfe3ec;
+  border-radius: 10px;
+  padding: 12px 13px;
+  background: white;
+  color: var(--text);
+  outline: none;
+  font-size: 13px;
+  transition: .2s;
+}
 
-      .sidebar{
-        position:relative;
-        width:100%;
-        height:auto;
-      }
+.field input:focus,
+.field select:focus,
+.field textarea:focus,
+.search-input:focus,
+.filter-select:focus {
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(99,102,241,.12);
+}
 
-      .main{
-        margin-left:0;
-      }
+.field textarea {
+  resize: vertical;
+  min-height: 90px;
+}
 
-    }
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
 
-  </style>
+.toolbar {
+  padding: 18px 24px;
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  flex-wrap: wrap;
+}
 
+.search-wrap {
+  flex: 1;
+  min-width: 220px;
+  position: relative;
+}
+
+.search-wrap span {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.search-input { padding-left: 37px; }
+.filter-select { width: auto; min-width: 145px; }
+
+.table-wrap { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 790px;
+}
+
+th {
+  text-align: left;
+  background: #f9fafc;
+  color: #6b7280;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  padding: 14px 18px;
+  white-space: nowrap;
+}
+
+td {
+  padding: 15px 18px;
+  border-top: 1px solid #eef0f5;
+  font-size: 12px;
+  vertical-align: middle;
+}
+
+tbody tr:hover { background: #fafbff; }
+
+.person { font-weight: 700; font-size: 12px; }
+
+.email {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 9px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.status:before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-new { background: #eef2ff; color: #4338ca; }
+.status-contacted { background: #fff7ed; color: #c2410c; }
+.status-converted { background: #ecfdf5; color: #15803d; }
+
+.row-actions { display: flex; gap: 7px; }
+
+.icon-btn {
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 8px;
+  padding: 7px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #4b5563;
+}
+
+.icon-btn:hover { background: #f3f4f6; }
+
+.icon-btn.delete:hover {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.empty {
+  text-align: center;
+  padding: 42px 20px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.empty strong {
+  display: block;
+  color: #374151;
+  font-size: 15px;
+  margin-bottom: 7px;
+}
+
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 15px 24px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+footer {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 11px;
+  padding: 8px 0 20px;
+}
+
+.toast {
+  position: fixed;
+  right: 22px;
+  top: 22px;
+  z-index: 50;
+  background: #111827;
+  color: white;
+  padding: 14px 18px;
+  border-radius: 12px;
+  box-shadow: 0 12px 35px #11182733;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+  transition: .25s;
+  max-width: calc(100vw - 44px);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media(max-width:1050px) {
+  .sidebar { width: 210px; }
+  .main { margin-left: 210px; }
+  .stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+
+@media(max-width:700px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    padding: 16px;
+    display: block;
+  }
+
+  .brand { padding: 0 4px 15px; }
+  .nav-label, .sidebar-bottom { display: none; }
+
+  .nav {
+    display: flex;
+    gap: 5px;
+    overflow-x: auto;
+  }
+
+  .nav a {
+    white-space: nowrap;
+    margin: 0;
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .main { margin-left: 0; padding: 22px 14px; }
+  .hero { padding: 23px; }
+  .stats { gap: 10px; }
+  .stat { padding: 15px; }
+  .stat-number { font-size: 27px; }
+  .stat-top { font-size: 11px; }
+  .stat-icon { width: 30px; height: 30px; }
+  .form-body { padding: 18px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .field.full { grid-column: auto; }
+  .panel-head, .toolbar { padding: 17px; }
+  .date-chip { display: none; }
+  .topbar { margin-bottom: 19px; }
+}
+
+@media(max-width:390px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+  .top-actions { width: 100%; }
+  .top-actions .btn { flex: 1; }
+}
+</style>
 </head>
 
 <body>
+<div class="app">
 
-  <div class="notification"
-       id="notification">
-
-    Lead Added Successfully!
-
-  </div>
-
-  <div class="sidebar">
-
-    <div class="logo">
-
-      <h2>Smart CRM</h2>
-
-      <p>Lead Management System</p>
-
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">S</div>
+      <div>
+        <h2>Smart CRM</h2>
+        <p>LEAD MANAGEMENT</p>
+      </div>
     </div>
 
-    <ul>
+    <div class="nav-label">Workspace</div>
 
-      <li><a href="#dashboard">Dashboard</a></li>
+    <nav class="nav" aria-label="Main navigation">
+      <a class="active" href="#dashboard"><span class="nav-icon">▦</span>Dashboard</a>
+      <a href="#add-lead"><span class="nav-icon">＋</span>Add lead</a>
+      <a href="#lead-list"><span class="nav-icon">☷</span>Lead directory</a>
+    </nav>
 
-      <li><a href="#addlead">Add Lead</a></li>
-
-      <li><a href="#leadtable">Lead Table</a></li>
-
-    </ul>
-
-  </div>
-
-  <div class="main">
-
-    <div class="welcome-card">
-
-      <h2>Welcome to Smart CRM Dashboard 👋</h2>
-
-      <p>
-        Manage and track your client leads efficiently.
-      </p>
-
+    <div class="sidebar-bottom">
+      Organize relationships.<br>
+      Grow your business.<br><br>
+      © 2026 Smart CRM
     </div>
+  </aside>
 
-    <div class="topbar">
+  <main class="main" id="dashboard">
 
-      <h1>Client Lead Dashboard</h1>
-
-      <div class="search-box">
-
-        <input type="text"
-               id="searchInput"
-               placeholder="Search leads...">
-
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">Overview</div>
+        <h1>Lead Dashboard</h1>
+        <p class="subtitle">Track prospects, manage follow-ups, and monitor conversions.</p>
       </div>
 
-    </div>
+      <div class="top-actions">
+        <div class="date-chip" id="todayDate"></div>
+        <button class="btn btn-primary" id="topAddBtn" type="button">＋ Add new lead</button>
+      </div>
+    </header>
 
-    <div class="dashboard"
-         id="dashboard">
+    <section class="hero">
+      <h2>Welcome back, Gayathri 👋</h2>
+      <p>Your leads, all in one place. Keep every prospect organized and turn more conversations into customers.</p>
+    </section>
 
-      <div class="card">
+    <section class="stats" aria-label="Lead statistics">
+      <article class="stat">
+        <div class="stat-top"><span>Total leads</span><span class="stat-icon">♙</span></div>
+        <div class="stat-number" id="totalLeads">0</div>
+        <div class="stat-note">All saved prospects</div>
+      </article>
 
-        <h3>Total Leads</h3>
+      <article class="stat">
+        <div class="stat-top"><span>New leads</span><span class="stat-icon">✦</span></div>
+        <div class="stat-number" id="newLeads">0</div>
+        <div class="stat-note">Awaiting first contact</div>
+      </article>
 
-        <p id="totalLeads">0</p>
+      <article class="stat">
+        <div class="stat-top"><span>Contacted</span><span class="stat-icon">↗</span></div>
+        <div class="stat-number" id="contactedLeads">0</div>
+        <div class="stat-note">Conversations started</div>
+      </article>
 
+      <article class="stat">
+        <div class="stat-top"><span>Converted</span><span class="stat-icon">✓</span></div>
+        <div class="stat-number" id="convertedLeads">0</div>
+        <div class="stat-note">Successful conversions</div>
+      </article>
+    </section>
+
+    <section class="panel" id="add-lead">
+      <div class="panel-head">
+        <div>
+          <h2 id="formTitle">Add a new lead</h2>
+          <p>Enter the prospect details below.</p>
+        </div>
+        <span class="status status-new" id="formMode">New entry</span>
       </div>
 
-      <div class="card">
+      <div class="form-body">
+        <form id="leadForm">
+          <div class="form-grid">
 
-        <h3>New Leads</h3>
+            <div class="field">
+              <label for="name">Client name *</label>
+              <input id="name" name="name" type="text"
+                     placeholder="e.g. Ananya Rao" maxlength="100" required>
+            </div>
 
-        <p id="newLeads">0</p>
+            <div class="field">
+              <label for="email">Email address *</label>
+              <input id="email" name="email" type="email"
+                     placeholder="name@company.com" maxlength="150" required>
+            </div>
 
+            <div class="field">
+              <label for="source">Lead source *</label>
+              <select id="source" name="source" required>
+                <option value="">Choose a source</option>
+                <option>Website</option>
+                <option>Referral</option>
+                <option>LinkedIn</option>
+                <option>Social media</option>
+                <option>Advertisement</option>
+                <option>Event</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="status">Lead status *</label>
+              <select id="status" name="status" required>
+                <option>New</option>
+                <option>Contacted</option>
+                <option>Converted</option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label for="notes">Notes (optional)</label>
+              <textarea id="notes" name="notes" maxlength="1000"
+                        placeholder="Add context, requirements, or next steps..."></textarea>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-light" id="cancelEditBtn" hidden>Cancel edit</button>
+            <button type="reset" class="btn btn-light" id="resetBtn">Clear form</button>
+            <button type="submit" class="btn btn-primary" id="submitBtn">Save lead</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="panel" id="lead-list">
+      <div class="panel-head">
+        <div>
+          <h2>Lead directory</h2>
+          <p>Search, filter, edit, or export your lead records.</p>
+        </div>
+        <button class="btn btn-light" id="exportBtn" type="button">↓ Export CSV</button>
       </div>
 
-      <div class="card">
+      <div class="toolbar">
+        <div class="search-wrap">
+          <span>⌕</span>
+          <input class="search-input" id="searchInput" type="search"
+                 placeholder="Search name, email, source, notes..."
+                 aria-label="Search leads">
+        </div>
 
-        <h3>Contacted</h3>
-
-        <p id="contactedLeads">0</p>
-
-      </div>
-
-      <div class="card">
-
-        <h3>Converted</h3>
-
-        <p id="convertedLeads">0</p>
-
-      </div>
-
-    </div>
-
-    <div class="form-section"
-         id="addlead">
-
-      <h2>Add New Lead</h2>
-
-      <form id="leadForm">
-
-        <input type="text"
-               id="name"
-               placeholder="Client Name"
-               required>
-
-        <input type="email"
-               id="email"
-               placeholder="Client Email"
-               required>
-
-        <input type="text"
-               id="source"
-               placeholder="Lead Source"
-               required>
-
-        <select id="status">
-
+        <select class="filter-select" id="statusFilter" aria-label="Filter by status">
+          <option value="All">All statuses</option>
           <option value="New">New</option>
-
-          <option value="Contacted">
-            Contacted
-          </option>
-
-          <option value="Converted">
-            Converted
-          </option>
-
+          <option value="Contacted">Contacted</option>
+          <option value="Converted">Converted</option>
         </select>
 
-        <textarea id="notes"
-                  rows="4"
-                  placeholder="Lead Notes"></textarea>
+        <select class="filter-select" id="sortSelect" aria-label="Sort leads">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </div>
 
-        <button type="submit"
-                class="btn">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Client</th>
+              <th>Source</th>
+              <th>Status</th>
+              <th>Date added</th>
+              <th>Notes</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
 
-          Add Lead
+        <div class="empty" id="emptyState">
+          <strong>No leads yet</strong>
+          Add your first lead using the form above.
+        </div>
+      </div>
 
-        </button>
+      <div class="table-footer">
+        <span id="resultCount">Showing 0 leads</span>
+        <span>Data is saved in this browser.</span>
+      </div>
+    </section>
 
-      </form>
+    <footer>© 2026 Smart CRM · Built by Gayathri Kella</footer>
+  </main>
+</div>
 
-    </div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <div class="table-section"
-         id="leadtable">
+<script>
+"use strict";
 
-      <h2>Lead Details</h2>
+const STORAGE_KEY = "smartCRMLeads_v2";
+const LEGACY_KEY = "leads";
 
-      <table>
+const form = document.getElementById("leadForm");
+const tableBody = document.getElementById("tableBody");
+const searchInput = document.getElementById("searchInput");
+const statusFilter = document.getElementById("statusFilter");
+const sortSelect = document.getElementById("sortSelect");
+const toast = document.getElementById("toast");
 
-        <thead>
+let editingId = null;
+let toastTimer;
 
-          <tr>
+function createId() {
+  return window.crypto && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
 
-            <th>Name</th>
-            <th>Email</th>
-            <th>Source</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th>Notes</th>
-            <th>Action</th>
+function loadLeads() {
+  try {
+    const saved =
+      localStorage.getItem(STORAGE_KEY) ??
+      localStorage.getItem(LEGACY_KEY);
 
-          </tr>
+    if (!saved) return [];
 
-        </thead>
+    const parsed = JSON.parse(saved);
+    if (!Array.isArray(parsed)) return [];
 
-        <tbody id="tableBody"></tbody>
+    return parsed
+      .filter(x => x && typeof x === "object")
+      .map((x, i) => ({
+        id: String(x.id || createId() || i),
+        name: String(x.name || ""),
+        email: String(x.email || ""),
+        source: String(x.source || "Other"),
+        status: ["New", "Contacted", "Converted"].includes(x.status)
+          ? x.status
+          : "New",
+        notes: String(x.notes || ""),
+        date: String(x.date || new Date().toLocaleDateString("en-GB")),
+        createdAt: Number(x.createdAt) || Date.now() + i
+      }));
+  } catch (error) {
+    console.error("Could not load saved leads:", error);
+    return [];
+  }
+}
 
-      </table>
+let leads = loadLeads();
 
-    </div>
+function saveLeads() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
+    return true;
+  } catch (error) {
+    showToast("Could not save. Browser storage may be full or disabled.");
+    console.error(error);
+    return false;
+  }
+}
 
-    <footer>
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("show");
 
-      <p>
-        © 2026 Smart CRM Dashboard |
-        Developed by Gayathri Kella
-      </p>
+  clearTimeout(toastTimer);
 
-    </footer>
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2600);
+}
 
-  </div>
+function updateDashboard() {
+  document.getElementById("totalLeads").textContent = leads.length;
 
-  <script>
+  document.getElementById("newLeads").textContent =
+    leads.filter(x => x.status === "New").length;
 
-    const form =
-    document.getElementById("leadForm");
+  document.getElementById("contactedLeads").textContent =
+    leads.filter(x => x.status === "Contacted").length;
 
-    const tableBody =
-    document.getElementById("tableBody");
+  document.getElementById("convertedLeads").textContent =
+    leads.filter(x => x.status === "Converted").length;
+}
 
-    const searchInput =
-    document.getElementById("searchInput");
+function makeCell(text) {
+  const td = document.createElement("td");
+  td.textContent = text || "—";
+  return td;
+}
 
-    const notification =
-    document.getElementById("notification");
+function renderLeads() {
+  const query = searchInput.value.trim().toLowerCase();
+  const chosenStatus = statusFilter.value;
 
-    let editIndex = null;
+  let visible = leads.filter(lead => {
+    const matchesQuery = [
+      lead.name,
+      lead.email,
+      lead.source,
+      lead.status,
+      lead.notes
+    ].some(value => value.toLowerCase().includes(query));
 
-    let leads =
-    JSON.parse(localStorage.getItem("leads"))
-    || [];
+    return matchesQuery &&
+      (chosenStatus === "All" || lead.status === chosenStatus);
+  });
 
-    displayLeads();
+  if (sortSelect.value === "name") {
+    visible.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortSelect.value === "oldest") {
+    visible.sort((a, b) => a.createdAt - b.createdAt);
+  } else {
+    visible.sort((a, b) => b.createdAt - a.createdAt);
+  }
 
-    updateDashboard();
+  tableBody.replaceChildren();
 
-    function showNotification(message){
+  const emptyState = document.getElementById("emptyState");
 
-      notification.innerText = message;
+  emptyState.style.display = visible.length ? "none" : "block";
 
-      notification.classList.add("show");
+  emptyState.innerHTML = query || chosenStatus !== "All"
+    ? "<strong>No matching leads</strong>Try another search term or status filter."
+    : "<strong>No leads yet</strong>Add your first lead using the form above.";
 
-      setTimeout(()=>{
+  visible.forEach(lead => {
+    const tr = document.createElement("tr");
 
-        notification.classList.remove("show");
+    const client = document.createElement("td");
 
-      },2000);
+    const name = document.createElement("div");
+    name.className = "person";
+    name.textContent = lead.name;
 
+    const email = document.createElement("div");
+    email.className = "email";
+    email.textContent = lead.email;
+
+    client.append(name, email);
+
+    tr.append(client, makeCell(lead.source));
+
+    const statusCell = document.createElement("td");
+    const badge = document.createElement("span");
+
+    badge.className =
+      "status " +
+      (lead.status === "New"
+        ? "status-new"
+        : lead.status === "Contacted"
+        ? "status-contacted"
+        : "status-converted");
+
+    badge.textContent = lead.status;
+    statusCell.append(badge);
+    tr.append(statusCell);
+
+    tr.append(makeCell(lead.date));
+    tr.append(makeCell(lead.notes));
+
+    const actions = document.createElement("td");
+    const group = document.createElement("div");
+    group.className = "row-actions";
+
+    const edit = document.createElement("button");
+    edit.type = "button";
+    edit.className = "icon-btn";
+    edit.textContent = "Edit";
+    edit.setAttribute("aria-label", `Edit ${lead.name}`);
+    edit.addEventListener("click", () => editLead(lead.id));
+
+    const del = document.createElement("button");
+    del.type = "button";
+    del.className = "icon-btn delete";
+    del.textContent = "Delete";
+    del.setAttribute("aria-label", `Delete ${lead.name}`);
+    del.addEventListener("click", () => deleteLead(lead.id));
+
+    group.append(edit, del);
+    actions.append(group);
+    tr.append(actions);
+
+    tableBody.append(tr);
+  });
+
+  document.getElementById("resultCount").textContent =
+    `Showing ${visible.length} of ${leads.length} lead${leads.length === 1 ? "" : "s"}`;
+}
+
+function resetFormState() {
+  editingId = null;
+  form.reset();
+
+  document.getElementById("formTitle").textContent = "Add a new lead";
+  document.getElementById("formMode").textContent = "New entry";
+  document.getElementById("submitBtn").textContent = "Save lead";
+  document.getElementById("cancelEditBtn").hidden = true;
+}
+
+form.addEventListener("submit", event => {
+  event.preventDefault();
+
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const source = document.getElementById("source").value;
+  const status = document.getElementById("status").value;
+  const notes = document.getElementById("notes").value.trim();
+
+  if (!name || !email || !source) {
+    showToast("Please complete all required fields.");
+    return;
+  }
+
+  if (editingId !== null) {
+    const index = leads.findIndex(x => x.id === editingId);
+
+    if (index === -1) {
+      resetFormState();
+      showToast("That lead could not be found.");
+      return;
     }
 
-    form.addEventListener("submit",
+    leads[index] = {
+      ...leads[index],
+      name,
+      email,
+      source,
+      status,
+      notes
+    };
 
-    function(e){
+    if (!saveLeads()) return;
 
-      e.preventDefault();
+    resetFormState();
+    showToast("Lead updated successfully.");
 
-      const lead = {
-
-        name:
-        document.getElementById("name").value,
-
-        email:
-        document.getElementById("email").value,
-
-        source:
-        document.getElementById("source").value,
-
-        status:
-        document.getElementById("status").value,
-
-        notes:
-        document.getElementById("notes").value,
-
-        date:
-        new Date().toLocaleDateString('en-GB')
-
-      };
-
-      if(editIndex === null){
-
-        leads.push(lead);
-
-        showNotification(
-          "Lead added successfully!"
-        );
-
-      }
-
-      else{
-
-        leads[editIndex] = lead;
-
-        showNotification(
-          "Lead updated successfully!"
-        );
-
-        editIndex = null;
-
-      }
-
-      localStorage.setItem(
-        "leads",
-        JSON.stringify(leads)
-      );
-
-      displayLeads();
-
-      updateDashboard();
-
-      form.reset();
-
+  } else {
+    leads.push({
+      id: createId(),
+      name,
+      email,
+      source,
+      status,
+      notes,
+      date: new Date().toLocaleDateString("en-GB"),
+      createdAt: Date.now()
     });
 
-    function displayLeads(filteredLeads = leads){
-
-      tableBody.innerHTML = "";
-
-      filteredLeads.forEach((lead,index)=>{
-
-        let badgeClass = "";
-
-        if(lead.status === "New"){
-
-          badgeClass = "new";
-
-        }
-
-        else if(
-          lead.status === "Contacted"
-        ){
-
-          badgeClass = "contacted";
-
-        }
-
-        else{
-
-          badgeClass = "converted";
-
-        }
-
-        tableBody.innerHTML += `
-
-          <tr>
-
-            <td>${lead.name}</td>
-
-            <td>${lead.email}</td>
-
-            <td>${lead.source}</td>
-
-            <td>
-
-              <span class="badge ${badgeClass}">
-                ${lead.status}
-              </span>
-
-            </td>
-
-            <td>${lead.date}</td>
-
-            <td>${lead.notes}</td>
-
-            <td>
-
-              <div class="action-buttons">
-
-                <button class="edit-btn"
-                        onclick="editLead(${index})">
-
-                  Edit
-
-                </button>
-
-                <button class="delete-btn"
-                        onclick="deleteLead(${index})">
-
-                  Delete
-
-                </button>
-
-              </div>
-
-            </td>
-
-          </tr>
-
-        `;
-
-      });
-
+    if (!saveLeads()) {
+      leads.pop();
+      return;
     }
 
-    function deleteLead(index){
+    form.reset();
+    showToast("Lead added successfully.");
+  }
 
-      leads.splice(index,1);
+  updateDashboard();
+  renderLeads();
+});
 
-      localStorage.setItem(
-        "leads",
-        JSON.stringify(leads)
-      );
+function editLead(id) {
+  const lead = leads.find(x => x.id === id);
+  if (!lead) return;
 
-      displayLeads();
+  editingId = id;
 
-      updateDashboard();
+  document.getElementById("name").value = lead.name;
+  document.getElementById("email").value = lead.email;
+  document.getElementById("source").value = lead.source;
+  document.getElementById("status").value = lead.status;
+  document.getElementById("notes").value = lead.notes;
 
-    }
+  document.getElementById("formTitle").textContent = "Edit lead details";
+  document.getElementById("formMode").textContent = "Editing";
+  document.getElementById("submitBtn").textContent = "Save changes";
+  document.getElementById("cancelEditBtn").hidden = false;
 
-    function editLead(index){
+  document.getElementById("add-lead").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
 
-      const lead = leads[index];
+  document.getElementById("name").focus({preventScroll: true});
+}
 
-      document.getElementById("name")
-      .value = lead.name;
+function deleteLead(id) {
+  const lead = leads.find(x => x.id === id);
 
-      document.getElementById("email")
-      .value = lead.email;
+  if (!lead || !confirm(`Delete the lead for "${lead.name}"? This cannot be undone.`)) {
+    return;
+  }
 
-      document.getElementById("source")
-      .value = lead.source;
+  const previous = leads;
+  leads = leads.filter(x => x.id !== id);
 
-      document.getElementById("status")
-      .value = lead.status;
+  if (!saveLeads()) {
+    leads = previous;
+    return;
+  }
 
-      document.getElementById("notes")
-      .value = lead.notes;
+  if (editingId === id) resetFormState();
 
-      editIndex = index;
+  updateDashboard();
+  renderLeads();
+  showToast("Lead deleted.");
+}
 
-    }
+function exportCSV() {
+  if (!leads.length) {
+    showToast("There are no leads to export yet.");
+    return;
+  }
 
-    function updateDashboard(){
+  const headers = [
+    "Name",
+    "Email",
+    "Source",
+    "Status",
+    "Date added",
+    "Notes"
+  ];
 
-      document.getElementById("totalLeads")
-      .innerText = leads.length;
+  const escapeCSV = value =>
+    `"${String(value ?? "").replace(/"/g, '""')}"`;
 
-      document.getElementById("newLeads")
-      .innerText =
-      leads.filter(l =>
-      l.status === "New").length;
+  const rows = leads.map(x =>
+    [x.name, x.email, x.source, x.status, x.date, x.notes]
+      .map(escapeCSV)
+      .join(",")
+  );
 
-      document.getElementById("contactedLeads")
-      .innerText =
-      leads.filter(l =>
-      l.status === "Contacted").length;
+  const blob = new Blob(
+    ["\uFEFF" + [headers.map(escapeCSV).join(","), ...rows].join("\r\n")],
+    {type: "text/csv;charset=utf-8;"}
+  );
 
-      document.getElementById("convertedLeads")
-      .innerText =
-      leads.filter(l =>
-      l.status === "Converted").length;
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
 
-    }
+  link.href = url;
+  link.download = "smart-crm-leads.csv";
 
-    searchInput.addEventListener(
-    "keyup",
+  document.body.append(link);
+  link.click();
+  link.remove();
 
-    function(){
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 
-      const value =
-      this.value.toLowerCase();
+  showToast("CSV export started.");
+}
 
-      const filtered =
-      leads.filter(lead =>
+searchInput.addEventListener("input", renderLeads);
+statusFilter.addEventListener("change", renderLeads);
+sortSelect.addEventListener("change", renderLeads);
 
-        lead.name.toLowerCase()
-        .includes(value)
+document.getElementById("exportBtn")
+  .addEventListener("click", exportCSV);
 
-        ||
+document.getElementById("cancelEditBtn")
+  .addEventListener("click", resetFormState);
 
-        lead.email.toLowerCase()
-        .includes(value)
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if (editingId !== null) resetFormState();
+});
 
-      );
+document.getElementById("topAddBtn").addEventListener("click", () => {
+  resetFormState();
 
-      displayLeads(filtered);
+  document.getElementById("add-lead").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
 
-    });
+  document.getElementById("name").focus({preventScroll: true});
+});
 
-  </script>
+document.getElementById("todayDate").textContent =
+  new Intl.DateTimeFormat("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  }).format(new Date());
 
+updateDashboard();
+renderLeads();
+</script>
 </body>
 </html>
